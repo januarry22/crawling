@@ -12,9 +12,9 @@
           <div class="container">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" style="margin-left: 45%;height:85px;">
               <a class="navbar-brand brand-logo" href="/" style="color:white; font-weight:bold; font-size:30px;">
-                  좋은아이 용품점<!-- <img src="/resources/assets/images/logo.svg" alt="logo" /> --></a>
+                 januarry22@github.io<!-- <img src="/resources/assets/images/logo.svg" alt="logo" /> --></a>
               <a class="navbar-brand brand-logo-mini" href="/"><!-- <img src="/resources/assets/images/logo-mini.svg" alt="logo" /> -->
-                  좋은아이 용품점</a>
+                januarry22@github.io</a>
             </div>
         
           </div>
