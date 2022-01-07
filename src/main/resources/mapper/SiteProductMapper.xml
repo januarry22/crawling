@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.admin.SiteProductMapper">
+
+
+	
+	<insert id="create" parameterType="object">
+		/*data 저장 */
+			insert into
+				site_product
+				(
+					shop_name
+					,info
+					,title
+					,link_url
+					,content
+					,create_dt
+					,create_by
+				)
+				values
+				 <foreach collection="data" item="item" separator=",">
+				(
+					#{item.shop_name}
+					,#{item.info}
+					,#{item.title}
+					,#{item.link_url}
+					,#{item.content}
+					,now()
+					,#{create_by}
+				)
+				</foreach>
+	</insert>
+
+</mapper>

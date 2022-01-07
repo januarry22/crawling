@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.admin.StoreProductMapper">
+
+
+	<select id="list" parameterType="string" resultType="hashmap">
+			/* 상품 리스트*/
+			select
+				*
+			from(
+				select
+					(@ROWNUM:=@ROWNUM+1) as rownum
+					,m.*
+		            ,date_format(create_dt, '%Y-%m-%d') create_dt_yyyymmdd
+		      		from
+					store_product m, (SELECT @ROWNUM:=0) TMP 
+				where
+					delete_yn = 'N'
+				order by 
+					create_dt asc
+		     ) sub
+		     order by
+				rownum desc
+		</select>
+	
+	<insert id="store_create" parameterType="object">
+		/*data 저장 */
+			insert into
+				smart_store
+				(
+					name
+					,link
+					,create_dt
+					,create_by
+				)
+				values
+				(
+					#{name}
+					,#{link}
+					,now()
+					,#{create_by}
+				)
+				<selectKey keyProperty="store_seq" resultType="Integer">
+			        SELECT LAST_INSERT_ID()
+			    </selectKey>
+	</insert>
+
+	<insert id="create" parameterType="object">
+		/*data 저장 */
+			insert into
+				store_product
+				(
+					store_seq
+					,name
+					,price
+					,prev_price
+					,discount
+					,content
+					,writer_name
+					,create_dt
+					,create_by
+				)
+				values
+		<!-- 		 <foreach collection="data" item="item" separator=",">
+					(
+					#{store_seq}
+					,#{item.name}
+					,#{item.price}
+					,#{item.prev_price}
+					,#{item.discount}
+					,#{item.renderContent}
+					,#{item.writer_name}
+					,now()
+					,#{create_by}
+					)
+				</foreach> -->
+					(
+					#{store_seq}
+					,#{name}
+					,#{price}
+					,#{prev_price}
+					,#{discount}
+					,#{renderContent}
+					,#{writer_name}
+					,now()
+					,#{create_by}
+					)
+				<selectKey keyProperty="product_seq" resultType="Integer">
+			        SELECT LAST_INSERT_ID()
+			    </selectKey>
+	</insert>
+	
+	
+	<insert id="option_create" parameterType="object">
+		/*data 저장 */
+		   <selectKey keyProperty="option_code_seq" resultType="int" order="BEFORE">
+		        SELECT option_code_seq from option_code where name like CONCAT('%', #{option_group}, '%')
+		  </selectKey> 
+			insert into
+				product_option
+				(
+					shop_seq
+					,product_seq
+					,option_code_seq 
+					,name
+					,grade
+			 		,content
+					,create_dt
+				)
+				values
+					(
+					3
+					,#{product_seq}
+				 	,#{option_code_seq}
+					,#{option_name}
+					,#{option_grade}
+					,#{option_group}
+				 	,now()
+					)
+	</insert>
+		
+	
+	<select id="detail" parameterType="string" resultType="hashmap">
+			/* 상품 리스트*/
+			select
+					m.*
+		            ,date_format(create_dt, '%Y-%m-%d') create_dt_yyyymmdd
+		      		from
+					store_product m
+				where
+					store_product_seq = #{seq}
+		
+	</select>
+	
+	
+</mapper>
